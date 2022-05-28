@@ -1,5 +1,6 @@
 package shapes;
 import java.awt.Graphics2D;
+import java.awt.Point;
 import java.awt.Shape;
 import java.awt.geom.AffineTransform;
 import java.io.Serializable;
@@ -17,6 +18,8 @@ abstract public class TShape implements Serializable{
 	
 	//working variables (상태, 변함)
 	private boolean bSelected;
+	private Point rotatePoints;
+	private Point points;
 
 	private int px, py; //(전점)
 	private double cx, cy; //(기준점)
@@ -30,6 +33,8 @@ abstract public class TShape implements Serializable{
 		this.affineTransform = new AffineTransform(); //계속 상태를 집어넣는 곳
 		this.affineTransform.setToIdentity(); //초기화(항등원)
 		this.anchors = new TAnchors();
+		this.points = new Point();
+		this.rotatePoints = new Point();
 	}
 	
 	//setters and getters
@@ -85,6 +90,11 @@ abstract public class TShape implements Serializable{
 		this.px = x; //다시 세팅해야 move가 또 일어날 때 거리가 새롭게 계산됨
 		this.py = y;
 	}
+	public void finalizeMoving(int x, int y) {
+		this.shape = this.affineTransform.createTransformedShape(this.shape);
+		this.affineTransform.setToIdentity();
+	}
+	
 	//resize
 	public void prepareResizing(int x, int y) {
 		this.px = x;
@@ -129,8 +139,27 @@ abstract public class TShape implements Serializable{
 		this.affineTransform.setToIdentity(); //누적 데이터를 초기화 시키기
 	}
 	
-	public void finalizeMoving(int x, int y) {
-		this.shape = this.affineTransform.createTransformedShape(this.shape);
-		this.affineTransform.setToIdentity();
+	public void prepareRotating(int x, int y) {
+//		this.px = x;
+//		this.py = y;
+		this.points.x=x;
+		this.points.y=y;
+		
+//		Point2D rotateAnchorPoint = this.anchors.getResizeAnchorPoint(x, y);
+		this.rotatePoints.x = (int) this.shape.getBounds().getCenterX();
+		this.rotatePoints.y = (int) this.shape.getBounds().getCenterY();
+		
+	}
+	public void keepRotating(int x, int y) {
+		double rotateAngle = Math.toRadians(computeAngle(this.rotatePoints, this.points, new Point(x,y)));
+		this.affineTransform.setToRotation(rotateAngle, this.rotatePoints.getX(), this.rotatePoints.getY());		
 	};
+	private double computeAngle(Point centerPoint, Point startPoint, Point endPoint) { // 점 3개를 갖고, tan로 각도를 구한다.
+		double startAngle = Math.toDegrees(Math.atan2(centerPoint.getX() - startPoint.getX(),centerPoint.getY() - startPoint.getY()));
+		double endAngle = Math.toDegrees(Math.atan2( centerPoint.getX() - endPoint.getX(), centerPoint.getY() - endPoint.getY()));
+		double angle = startAngle-endAngle;
+		
+		if(angle < 0) angle += 360;
+		return angle;
+	}
 }
