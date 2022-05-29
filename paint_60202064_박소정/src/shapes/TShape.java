@@ -19,7 +19,7 @@ abstract public class TShape implements Serializable{
 	//working variables (상태, 변함)
 	private boolean bSelected;
 	private Point rotatePoints;
-	private Point points;
+	private Point rotateAnchorPoints;
 
 	private int px, py; //(전점)
 	private double cx, cy; //(기준점)
@@ -33,7 +33,7 @@ abstract public class TShape implements Serializable{
 		this.affineTransform = new AffineTransform(); //계속 상태를 집어넣는 곳
 		this.affineTransform.setToIdentity(); //초기화(항등원)
 		this.anchors = new TAnchors();
-		this.points = new Point();
+		this.rotateAnchorPoints = new Point();
 		this.rotatePoints = new Point();
 	}
 	
@@ -140,26 +140,23 @@ abstract public class TShape implements Serializable{
 	}
 	
 	public void prepareRotating(int x, int y) {
-//		this.px = x;
-//		this.py = y;
-		this.points.x=x;
-		this.points.y=y;
-		
-//		Point2D rotateAnchorPoint = this.anchors.getResizeAnchorPoint(x, y);
-		this.rotatePoints.x = (int) this.shape.getBounds().getCenterX();
-		this.rotatePoints.y = (int) this.shape.getBounds().getCenterY();
-		
+		this.rotateAnchorPoints.x=x;
+		this.rotateAnchorPoints.y=y;
 	}
+	
 	public void keepRotating(int x, int y) {
-		double rotateAngle = Math.toRadians(computeAngle(this.rotatePoints, this.points, new Point(x,y)));
+		this.rotatePoints.x = (int)this.shape.getBounds().getCenterX();
+		this.rotatePoints.y = (int)this.shape.getBounds().getCenterY();
+		Point endPoints = new Point(x,y);
+		double rotateAngle = Math.toRadians(rotateAngle(this.rotatePoints, this.rotateAnchorPoints,endPoints));
 		this.affineTransform.setToRotation(rotateAngle, this.rotatePoints.getX(), this.rotatePoints.getY());		
 	};
-	private double computeAngle(Point centerPoint, Point startPoint, Point endPoint) { // 점 3개를 갖고, tan로 각도를 구한다.
-		double startAngle = Math.toDegrees(Math.atan2(centerPoint.getX() - startPoint.getX(),centerPoint.getY() - startPoint.getY()));
-		double endAngle = Math.toDegrees(Math.atan2( centerPoint.getX() - endPoint.getX(), centerPoint.getY() - endPoint.getY()));
-		double angle = startAngle-endAngle;
-		
-		if(angle < 0) angle += 360;
-		return angle;
+	
+	//tan로 각도 구하기
+	private double rotateAngle(Point rotatePoints, Point startPoints, Point endPoints) { 
+		double startAngle = Math.toDegrees(Math.atan2(rotatePoints.x-startPoints.x, rotatePoints.y-startPoints.y));
+		double endAngle = Math.toDegrees(Math.atan2(rotatePoints.x-endPoints.x, rotatePoints.y-endPoints.y));
+		double rotateAngle = startAngle-endAngle;
+		return rotateAngle;
 	}
 }
