@@ -82,38 +82,16 @@ public class TAnchors {
 			
 			EAnchors eAnchor = EAnchors.values()[i];
 			switch (eAnchor) {
-			case eNW:
-				break;
-			case eWW:
-				y = y+h/2;
-				break;
-			case eSW:
-				y = y+h;
-				break;
-			case eSS:
-				x = x+w/2;
-				y = y+h;
-				break;
-			case eSE:
-				x = x+w;
-				y = y+h;
-				break;
-			case eEE:
-				x = x+w;
-				y = y+h/2;
-				break;
-			case eNE:
-				x = x+w;
-				break;
-			case eNN:
-				x = x+w/2;
-				break;
-			case eRR:
-				x = x+w/2;
-				y = y-50;
-				break;
-			default:
-				break;
+			case eNW: break;
+			case eWW: y = y+h/2; break;
+			case eSW: y = y+h; break;
+			case eSS: x = x+w/2; y = y+h; break;
+			case eSE: x = x+w; y = y+h; break;
+			case eEE: x = x+w; y = y+h/2; break;
+			case eNE: x = x+w; break;
+			case eNN: x = x+w/2; break;
+			case eRR: x = x+w/2; y = y-50; break;
+			default: break;
 			}
 			this.anchors[eAnchor.ordinal()].setFrame(x, y, WIDTH, HEIGHT); //ÁÂÇ¥¼¼ÆÃ
 			graphics2D.draw(this.anchors[eAnchor.ordinal()]);

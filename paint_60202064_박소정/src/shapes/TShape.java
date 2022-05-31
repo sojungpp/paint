@@ -30,6 +30,7 @@ abstract public class TShape implements Serializable{
 	public abstract TShape clone();
 	public TShape() {
 		this.bSelected = false;
+		
 		this.affineTransform = new AffineTransform(); //계속 상태를 집어넣는 곳
 		this.affineTransform.setToIdentity(); //초기화(항등원)
 		this.anchors = new TAnchors();
@@ -43,6 +44,24 @@ abstract public class TShape implements Serializable{
 	}
 	public void setSelected(boolean bSelected) {
 		this.bSelected = bSelected;
+	}
+	public TAnchors getAnchors() {
+		return anchors;
+	}
+	public void setAnchors(TAnchors anchors) {
+		this.anchors = anchors;
+	}
+	public AffineTransform getAffineTransform() {
+		return affineTransform;
+	}
+	public void setAffineTransform(AffineTransform affineTransform) {
+		this.affineTransform = affineTransform;
+	}
+	public EAnchors getSelectedAnchor() {
+		return this.anchors.geteSelectedAnchor();
+	}
+	public Shape getShape() {
+		return shape;
 	}
 
 	//methods
@@ -73,12 +92,7 @@ abstract public class TShape implements Serializable{
 		return false;
 	}
 	
-	public EAnchors getSelectedAnchor() {
-		return this.anchors.geteSelectedAnchor();
-	}
-	public Shape getShape() {
-		return shape;
-	}
+	/*
 	//move
 	public void prepareMoving(int x, int y) {
 		this.px = x;
@@ -138,7 +152,8 @@ abstract public class TShape implements Serializable{
 		this.shape = this.affineTransform.createTransformedShape(this.shape); //누적시키지 않도록
 		this.affineTransform.setToIdentity(); //누적 데이터를 초기화 시키기
 	}
-	
+	*/
+	/*
 	public void prepareRotating(int x, int y) {
 		this.rotateAnchorPoints.x=x;
 		this.rotateAnchorPoints.y=y;
@@ -159,4 +174,5 @@ abstract public class TShape implements Serializable{
 		double rotateAngle = startAngle-endAngle;
 		return rotateAngle;
 	}
+	*/
 }

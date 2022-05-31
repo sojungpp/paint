@@ -22,7 +22,8 @@ public class Drawer extends Transformer {
 
 	@Override
 	public void finalize(int x, int y, Graphics2D graphics2d) {
-		
+//		this.shape = this.affineTransform.createTransformedShape(this.shape);
+//		this.affineTransform.setToIdentity();
 	}
 
 }
