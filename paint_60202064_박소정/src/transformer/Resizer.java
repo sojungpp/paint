@@ -7,30 +7,29 @@ import shapes.TShape;
 import shapes.TAnchors.EAnchors;
 
 public class Resizer extends Transformer {
+	protected double xScale, yScale; //(몇 배인지)
 
 	public Resizer(TShape selectedShape) {
 		super(selectedShape);
 	}
 
 	@Override
-	public void prepare(int x, int y, Graphics2D graphics2d) {
+	public void prepare(int x, int y) {
 		this.px = x;
 		this.py = y;
 		Point2D resizeAnchorPoint = this.anchors.getResizeAnchorPoint(x, y);
 		this.cx = resizeAnchorPoint.getX();
 		this.cy = resizeAnchorPoint.getY();
-
 	}
 
 	@Override
-	public void keepTransforming(int x, int y, Graphics2D graphics2d) {
+	public void keepTransforming(int x, int y) {
 		this.getResizeScale(x, y);
 		this.affineTransform.translate(cx, cy); //계산 전 원점 이동
 		this.affineTransform.scale(xScale, yScale);
 		this.affineTransform.translate(-cx, -cy); //계산 후 원위치
 		this.px = x; 
 		this.py = y;
-
 	}
 
 	private void getResizeScale(int x, int y) {
@@ -56,8 +55,8 @@ public class Resizer extends Transformer {
 	}
 
 	@Override
-	public void finalize(int x, int y, Graphics2D graphics2d) {
-//		this.shape = this.affineTransform.createTransformedShape(this.shape); //누적시키지 않도록
+	public void finalize(int x, int y) {
+		this.shape = this.affineTransform.createTransformedShape(this.shape); //누적시키지 않도록
 //		this.affineTransform.setToIdentity(); //누적 데이터를 초기화시키기
 
 	}

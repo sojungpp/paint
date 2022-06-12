@@ -1,5 +1,6 @@
 package frames;
 import java.awt.Color;
+import java.awt.image.BufferedImage;
 import java.awt.Cursor;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -38,10 +39,13 @@ public class DrawingPanel extends JPanel {
 		eMoving
 	} 
 	
+	private Vector<TShape> shapes;
+	private BufferedImage bufferedImage;
+	private Graphics2D graphics2DBufferedImage;
+	
 	private EDrawingState eDrawingState;
 	private ETools selectedTool;
 	private TShape currentShape;
-	private Vector<TShape> shapes;
 	private TShape temp;
 	private TShape selectedShape;
 	private Transformer transformer;
@@ -58,6 +62,14 @@ public class DrawingPanel extends JPanel {
 		this.addMouseListener(mouseHandler); 
 		this.addMouseMotionListener(mouseHandler); 
 		this.addMouseWheelListener(mouseHandler); 
+		//여기에 bufferedImage 넣으면 아직 사이즈 계산도 되지 않았는데 만들라고하니까 에러뜸, 그래서 구조 다 만들고 난 후인 initialize에 넣기
+			
+	}
+	
+	public void initialize() {
+		this.bufferedImage = (BufferedImage) this.createImage(this.getWidth(), this.getHeight());
+		this.graphics2DBufferedImage = (Graphics2D) this.bufferedImage.getGraphics();
+//		this.graphics2DBufferedImage.setXORMode(this.getBackground());
 		
 	}
 	
@@ -102,9 +114,12 @@ public class DrawingPanel extends JPanel {
 	
 	public void paint(Graphics graphics) { 
 		super.paint(graphics); //드로잉패널 자체를 그리라는 뜻, 저장하라는 것 필요 -> finishdrawing에 저장
+		
+		this.graphics2DBufferedImage.clearRect(0,0,this.bufferedImage.getWidth(), this.bufferedImage.getHeight());
 		for(TShape shape: this.getShapesAll()) {
-			shape.draw((Graphics2D)graphics);
+			shape.draw(this.graphics2DBufferedImage);
 		}	
+		graphics.drawImage(this.bufferedImage, 0, 0, this);
 	}
 	
 	private void prepareTransforming(int x, int y) {
@@ -128,20 +143,25 @@ public class DrawingPanel extends JPanel {
 			this.currentShape = this.selectedTool.newShape();
 			this.transformer = new Drawer(this.currentShape);
 		}
-		Graphics2D graphics2D = (Graphics2D) this.getGraphics();
-		graphics2D.setXORMode(this.getBackground());
-		this.transformer.prepare(x,y,graphics2D);
+//		Graphics2D graphics2D = (Graphics2D) this.getGraphics();
+//		graphics2D.setXORMode(this.getBackground());
+		this.transformer.prepare(x,y);
+		this.graphics2DBufferedImage.setXORMode(this.getBackground());
 	}
 	
 	private void keepTransforming(int x, int y) {
 		//erase
-		Graphics2D graphics2D = (Graphics2D) this.getGraphics();
-		graphics2D.setXORMode(this.getBackground());
-		this.currentShape.draw(graphics2D);
-		
+//		Graphics2D graphics2D = (Graphics2D) this.getGraphics();
+		this.graphics2DBufferedImage.setXORMode(this.getBackground());
+		this.currentShape.draw(this.graphics2DBufferedImage);
+		this.getGraphics().drawImage(this.bufferedImage,0,0,this);
+		//transform
+		this.transformer.keepTransforming(x, y);
 		//draw
-		this.transformer.keepTransforming(x, y, graphics2D);
-		this.currentShape.draw(graphics2D);
+		this.currentShape.draw(this.graphics2DBufferedImage);
+//		this.graphics2DBufferedImage.setPaintMode();
+		this.getGraphics().drawImage(this.bufferedImage, 0, 0, this);
+//		this.repaint(); 
 	}
 	
 	private void continueTransforming(int x, int y) {
@@ -149,9 +169,10 @@ public class DrawingPanel extends JPanel {
 	}
 
 	private void finishTransforming(int x, int y) {
-		Graphics2D graphics2D = (Graphics2D) this.getGraphics();
-		graphics2D.setXORMode(this.getBackground());
-		this.transformer.finalize(x,y,graphics2D);
+//		Graphics2D graphics2D = (Graphics2D) this.getGraphics();
+//		graphics2D.setXORMode(this.getBackground());
+		this.graphics2DBufferedImage.setPaintMode();
+		this.transformer.finalize(x,y);
 		
 		if(this.selectedShape != null) {
 			this.selectedShape.setSelected(false);
@@ -184,7 +205,8 @@ public class DrawingPanel extends JPanel {
 		this.selectedShape = this.onShape(x, y);
 		if(this.selectedShape != null) {
 			this.selectedShape.setSelected(true); //어차피 selected되니까 아래 코드의 draw됨
-			this.selectedShape.draw((Graphics2D) this.getGraphics());
+//			this.selectedShape.draw((Graphics2D) this.getGraphics());
+			this.selectedShape.draw(this.graphics2DBufferedImage);
 		}
 	}
 
@@ -276,4 +298,5 @@ public class DrawingPanel extends JPanel {
 		public void mouseWheelMoved(MouseWheelEvent e) {	
 		}
 	}
+
 }

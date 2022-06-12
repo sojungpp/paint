@@ -12,13 +12,13 @@ public class Rotator extends Transformer {
 	}
 
 	@Override
-	public void prepare(int x, int y, Graphics2D graphics2d) {
+	public void prepare(int x, int y) {
 		this.rotateAnchorPoints.x=x;
 		this.rotateAnchorPoints.y=y;
 	}
 
 	@Override
-	public void keepTransforming(int x, int y, Graphics2D graphics2d) {
+	public void keepTransforming(int x, int y) {
 		this.rotatePoints.x = (int)this.shape.getBounds().getCenterX();
 		this.rotatePoints.y = (int)this.shape.getBounds().getCenterY();
 		Point endPoints = new Point(x,y);
@@ -34,7 +34,7 @@ public class Rotator extends Transformer {
 	}
 
 	@Override
-	public void finalize(int x, int y, Graphics2D graphics2d) {
+	public void finalize(int x, int y) {
 		
 
 	}

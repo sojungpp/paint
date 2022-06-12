@@ -56,4 +56,9 @@ public class EditMenu extends JMenu {
 			}
 		}	
 	}
+
+	public void initialize() {
+		// TODO Auto-generated method stub
+		
+	}
 }

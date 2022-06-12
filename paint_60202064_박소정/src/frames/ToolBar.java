@@ -39,6 +39,11 @@ public class ToolBar extends JToolBar {
 		defaultButton.doClick(); //component에 doclick함수가 없어서 다시 JRadiobutton으로 바꿔서 doclick진행
 	}
 	
+	public void initialize() {
+		// TODO Auto-generated method stub
+		
+	}
+	
 	
 	private class ActionHandler implements ActionListener {
 		@Override
@@ -46,5 +51,7 @@ public class ToolBar extends JToolBar {
 				drawingPanel.setSelectedTool(ETools.valueOf(e.getActionCommand()));
 		}	
 	}
+
+
 	
 }

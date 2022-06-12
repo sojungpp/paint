@@ -21,7 +21,6 @@ public abstract class Transformer {
 	protected int px; //(전점)
 	protected int py;
 	protected double cx, cy; //(기준점)
-	protected double xScale, yScale; //(몇 배인지)
 	
 	public Transformer(TShape selectedShape) {
 		this.selectedShape = selectedShape;
@@ -32,8 +31,10 @@ public abstract class Transformer {
 		this.rotatePoints = new Point();
 	}
 	
-	public abstract void prepare(int x, int y, Graphics2D graphics2D);
-	public abstract void keepTransforming(int x, int y, Graphics2D graphics2D);
-	public abstract void finalize(int x, int y, Graphics2D graphics2d);
+	public abstract void prepare(int x, int y);
+//	public abstract void keepTransforming(int x, int y, Graphics2D graphics2D);
+	public abstract void keepTransforming(int x, int y);
+//	public abstract void finalize(int x, int y, Graphics2D graphics2d);
+	public abstract void finalize(int x, int y);
 	
 }

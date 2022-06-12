@@ -42,6 +42,11 @@ public class FileMenu extends JMenu {
 		this.drawingPanel = drawingPanel;
 	}
 	
+	public void initialize() {
+		// TODO Auto-generated method stub
+		
+	}
+	
 	private void store(File file) {
 		try {
 			FileOutputStream fileOutputStream = new FileOutputStream(file);
@@ -158,5 +163,6 @@ public class FileMenu extends JMenu {
 			}
 		}	
 	}
+
 
 }

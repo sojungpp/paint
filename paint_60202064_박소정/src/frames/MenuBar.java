@@ -30,4 +30,10 @@ public class MenuBar extends JMenuBar {
 		this.editMenu.associate(this.drawingPanel);
 	}
 
+	public void initialize() {
+		this.fileMenu.initialize();
+		this.editMenu.initialize();
+		
+	}
+
 }
