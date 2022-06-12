@@ -28,6 +28,7 @@ abstract public class TShape implements Serializable{
 	private Color lineColor;
 	private Color fillColor;
 	private int thickness;
+	
 
 	private int px, py; //(전점)
 	private double cx, cy; //(기준점)
@@ -135,5 +136,6 @@ abstract public class TShape implements Serializable{
 		}
 		return false;
 	}
+
 
 }

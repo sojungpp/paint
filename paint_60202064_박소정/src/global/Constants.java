@@ -1,6 +1,7 @@
 package global;
 
 import shapes.TArc;
+import shapes.TFreeLine;
 //import shapes.TArc;
 import shapes.TLine;
 import shapes.TOval;
@@ -25,7 +26,8 @@ public class Constants {
 		eLine("라인", new TLine(), "images/line.png", ETransformationStyle.e2PTransformation, "라인을 그립니다."),
 		ePolygon("폴리곤", new TPolygon(), "images/polygon.png", ETransformationStyle.eNPTransformation, "다각형을 그립니다."),
 		eTriangle("삼각형", new TTriangle(), "images/triangle.png", ETransformationStyle.e2PTransformation, "세모를 그립니다."),
-		eArc("반원", new TArc(), "images/arc.png", ETransformationStyle.e2PTransformation, "반원을 그립니다.");
+		eArc("반원", new TArc(), "images/arc.png", ETransformationStyle.e2PTransformation, "반원을 그립니다."),
+		eText("글씨", new TFreeLine(), "images/line.png", ETransformationStyle.e2PTransformation, "반원을 그립니다.");
 		//
 		private String label;
 		private TShape tool;

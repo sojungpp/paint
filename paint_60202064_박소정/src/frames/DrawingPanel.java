@@ -32,7 +32,6 @@ public class DrawingPanel extends JPanel {
 	//components
 	
 	private boolean updated;
-	private boolean fillCheck;
 	
 	private enum EDrawingState {
 		eIdle,
@@ -213,7 +212,7 @@ public class DrawingPanel extends JPanel {
 			this.transformer = new Drawer(this.currentShape);
 		}
 //		Graphics2D graphics2D = (Graphics2D) this.getGraphics();
-//		graphics2D.setXORMode(this.getBackground());
+//		this.currentShape.setGraphics2d(graphics2D);
 		this.transformer.prepare(x,y);
 		this.graphics2DBufferedImage.setXORMode(this.getBackground());
 	}
@@ -254,7 +253,6 @@ public class DrawingPanel extends JPanel {
 //			this.selectedShape.draw((Graphics2D) this.getGraphics());
 		}
 		this.repaint(); 
-		this.selectedShape.getAffineTransform().setToIdentity();
 	}
 	
 	
