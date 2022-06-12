@@ -32,9 +32,7 @@ public abstract class Transformer {
 	}
 	
 	public abstract void prepare(int x, int y);
-//	public abstract void keepTransforming(int x, int y, Graphics2D graphics2D);
 	public abstract void keepTransforming(int x, int y);
-//	public abstract void finalize(int x, int y, Graphics2D graphics2d);
 	public abstract void finalize(int x, int y);
 	
 }

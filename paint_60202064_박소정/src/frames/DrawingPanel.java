@@ -31,6 +31,7 @@ public class DrawingPanel extends JPanel {
 	//components
 	
 	private boolean updated;
+	private boolean fillCheck;
 	
 	private enum EDrawingState {
 		eIdle,
@@ -48,7 +49,10 @@ public class DrawingPanel extends JPanel {
 	private TShape currentShape;
 	private TShape temp;
 	private TShape selectedShape;
+	private Color lineColor;
+	private Color fillColor;
 	private Transformer transformer;
+	private int thickness;
 
 	public DrawingPanel() {
 		//attribute
@@ -62,6 +66,7 @@ public class DrawingPanel extends JPanel {
 		this.addMouseListener(mouseHandler); 
 		this.addMouseMotionListener(mouseHandler); 
 		this.addMouseWheelListener(mouseHandler); 
+		this.lineColor = Color.black;
 		//여기에 bufferedImage 넣으면 아직 사이즈 계산도 되지 않았는데 만들라고하니까 에러뜸, 그래서 구조 다 만들고 난 후인 initialize에 넣기
 			
 	}
@@ -70,7 +75,14 @@ public class DrawingPanel extends JPanel {
 		this.bufferedImage = (BufferedImage) this.createImage(this.getWidth(), this.getHeight());
 		this.graphics2DBufferedImage = (Graphics2D) this.bufferedImage.getGraphics();
 //		this.graphics2DBufferedImage.setXORMode(this.getBackground());
-		
+	}	
+	
+	public TShape getSelectedShape() {
+		return selectedShape;
+	}
+
+	public void setSelectedShape(TShape selectedShape) {
+		this.selectedShape = selectedShape;
 	}
 	
 	public boolean isUpdated() {
@@ -86,6 +98,7 @@ public class DrawingPanel extends JPanel {
 	public void setShapes(Object shapes) {
 		this.setShapesAll((Vector<TShape>) shapes);
 		this.repaint(); // paint함수는 호출하면 안 됨. repaint사용해서 윈도우가 알아서 할 수 있도록.
+		this.selectedShape=null;
 	}
 
 	public Object getShapes() {
@@ -110,6 +123,34 @@ public class DrawingPanel extends JPanel {
 	
 	public TShape getTemp() {
 		return temp;
+	}
+	
+	public void setThickness(int thickness) {
+		if(selectedShape!=null) {
+			selectedShape.setThickness(thickness);
+			repaint();
+		} else {
+			this.thickness = thickness;
+		}
+	}
+	
+	public void setLineColor(Color lineColor) {
+		if(selectedShape!=null) {
+			selectedShape.setLineColor(lineColor);
+			repaint();
+		} else {
+			this.lineColor = lineColor;
+		}
+		
+	}
+
+	public void setFillColor(Color fillColor) {
+		if(selectedShape!=null) {
+			selectedShape.setFillColor(fillColor);
+			repaint();
+		} else {
+			this.fillColor = fillColor;
+		}
 	}
 	
 	public void paint(Graphics graphics) { 
@@ -152,7 +193,7 @@ public class DrawingPanel extends JPanel {
 	private void keepTransforming(int x, int y) {
 		//erase
 //		Graphics2D graphics2D = (Graphics2D) this.getGraphics();
-		this.graphics2DBufferedImage.setXORMode(this.getBackground());
+//		this.graphics2DBufferedImage.setXORMode(this.getBackground());
 		this.currentShape.draw(this.graphics2DBufferedImage);
 		this.getGraphics().drawImage(this.bufferedImage,0,0,this);
 		//transform
@@ -173,6 +214,7 @@ public class DrawingPanel extends JPanel {
 //		graphics2D.setXORMode(this.getBackground());
 		this.graphics2DBufferedImage.setPaintMode();
 		this.transformer.finalize(x,y);
+//		this.currentShape.drawAnchors(this.graphics2DBufferedImage);
 		
 		if(this.selectedShape != null) {
 			this.selectedShape.setSelected(false);
@@ -201,11 +243,10 @@ public class DrawingPanel extends JPanel {
 		}
 		//erase
 		this.repaint(); // 모든걸 다 지우고 새로 그리는것
-		//draw
+		//draw anchors
 		this.selectedShape = this.onShape(x, y);
 		if(this.selectedShape != null) {
 			this.selectedShape.setSelected(true); //어차피 selected되니까 아래 코드의 draw됨
-//			this.selectedShape.draw((Graphics2D) this.getGraphics());
 			this.selectedShape.draw(this.graphics2DBufferedImage);
 		}
 	}
@@ -252,8 +293,6 @@ public class DrawingPanel extends JPanel {
 				eDrawingState = EDrawingState.eIdle;
 			}
 		}
-		
-
 		
 		@Override
 		public void mousePressed(MouseEvent e) {

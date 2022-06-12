@@ -2,6 +2,7 @@ package menus;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.print.PrinterException;
+import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -49,8 +50,10 @@ public class FileMenu extends JMenu {
 	
 	private void store(File file) {
 		try {
-			FileOutputStream fileOutputStream = new FileOutputStream(file);
-			ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);
+//			FileOutputStream fileOutputStream = new FileOutputStream(file);
+//			ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);
+			ObjectOutputStream objectOutputStream = new ObjectOutputStream(
+					new BufferedOutputStream(new FileOutputStream(file)));
 			objectOutputStream.writeObject(this.drawingPanel.getShapes());
 			 JOptionPane.showMessageDialog(null,file.getName()+ "로 저장되었습니다.");
 			objectOutputStream.close();
@@ -118,11 +121,12 @@ public class FileMenu extends JMenu {
 	}
 	
 	public void saveAs() {
-		JFileChooser fileChooser = new JFileChooser();
+		JFileChooser fileChooser = new JFileChooser(this.file);
 		int returnVal = fileChooser.showSaveDialog(this.drawingPanel); //얘 없어지면 다이얼로그도 없애기 (부모를 지정해준 것)
 		if (returnVal == JFileChooser.APPROVE_OPTION) {
 			this.file = fileChooser.getSelectedFile();
 			this.store(this.file);
+			
 		}
 	}
 	

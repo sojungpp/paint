@@ -1,14 +1,16 @@
 package shapes;
 
 import java.awt.Cursor;
+import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Point2D;
+import java.io.Serializable;
 
 import shapes.TAnchors.EAnchors;
 
-public class TAnchors {
+public class TAnchors implements Serializable{
 	
 	//동그라미 사이즈 고정
 	private final static int WIDTH = 15;
@@ -94,6 +96,10 @@ public class TAnchors {
 			default: break;
 			}
 			this.anchors[eAnchor.ordinal()].setFrame(x, y, WIDTH, HEIGHT); //좌표세팅
+			Color color = graphics2D.getColor();
+			graphics2D.setColor(graphics2D.getBackground());
+			graphics2D.fill(this.anchors[eAnchor.ordinal()]);
+			graphics2D.setColor(color);
 			graphics2D.draw(this.anchors[eAnchor.ordinal()]);
 		}
 	}

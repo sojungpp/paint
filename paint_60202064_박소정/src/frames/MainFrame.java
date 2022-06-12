@@ -1,5 +1,6 @@
 package frames;
 import java.awt.BorderLayout;
+import java.awt.Color;
 
 import javax.swing.JFrame;
 
@@ -14,7 +15,7 @@ public class MainFrame extends JFrame {
 	
 	public MainFrame(){
 		//attribute
-		this.setSize(600,800);
+		this.setSize(700,800);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); //프로그램 종료
 		
 		//components

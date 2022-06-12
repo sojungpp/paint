@@ -1,4 +1,6 @@
 package shapes;
+import java.awt.BasicStroke;
+import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Shape;
@@ -20,6 +22,10 @@ abstract public class TShape implements Serializable{
 	private boolean bSelected;
 	private Point rotatePoints;
 	private Point rotateAnchorPoints;
+	private Shape transformedShape;
+	private Color lineColor;
+	private Color fillColor;
+	private int thickness;
 
 	private int px, py; //(전점)
 	private double cx, cy; //(기준점)
@@ -63,18 +69,49 @@ abstract public class TShape implements Serializable{
 	public Shape getShape() {
 		return shape;
 	}
-
+	public Color getLineColor() {
+		return lineColor;
+	}
+	public Color getFillColor() {
+		return fillColor;
+	}
+	
 	//methods
-	public abstract void keepDrawing(int x, int y);
 	public abstract void prepareDrawing(int x, int y);
+	public abstract void keepDrawing(int x, int y);
 	public void addPoint(int x, int y) {}
 	
+	public void setLineColor(Color lineColor) {
+		this.lineColor = lineColor;
+	}
+	public void setFillColor(Color fillColor) {
+		this.fillColor = fillColor;
+	}
+	public void setThickness(int thickness) {
+		this.thickness = thickness;
+	}
+	
 	public void draw(Graphics2D graphics2D) {
-		Shape transformedShape = this.affineTransform.createTransformedShape(this.shape); //잠깐 도형 만들어놓기
+		transformedShape = this.affineTransform.createTransformedShape(this.shape); //잠깐 도형 만들어놓기
+		if(lineColor!=null) {
+			graphics2D.setColor(lineColor);
+		} 
+		if(thickness!=0) {
+			graphics2D.setStroke(new BasicStroke(thickness));
+		}
 		graphics2D.draw(transformedShape);
+		if(fillColor!=null) {
+			graphics2D.setColor(fillColor);
+			graphics2D.fill(transformedShape);
+		}
+		
 		if(this.bSelected) {
 			this.anchors.draw(graphics2D, transformedShape.getBounds()); //transformedShape 하면서 앵커 그리도록
 		}
+	}
+	
+	public void drawAnchors(Graphics2D graphics2D) {
+			this.anchors.draw(graphics2D, transformedShape.getBounds()); //transformedShape 하면서 앵커 그리도록
 	}
 	
 	public boolean contains(int x, int y) {		
@@ -91,88 +128,5 @@ abstract public class TShape implements Serializable{
 		}
 		return false;
 	}
-	
-	/*
-	//move
-	public void prepareMoving(int x, int y) {
-		this.px = x;
-		this.py = y;
-	}
-	
-	public void keepMoving(int x, int y) {
-		this.affineTransform.translate(x-this.px, y-this.py);
-		this.px = x; //다시 세팅해야 move가 또 일어날 때 거리가 새롭게 계산됨
-		this.py = y;
-	}
-	public void finalizeMoving(int x, int y) {
-		this.shape = this.affineTransform.createTransformedShape(this.shape);
-		this.affineTransform.setToIdentity();
-	}
-	
-	//resize
-	public void prepareResizing(int x, int y) {
-		this.px = x;
-		this.py = y;
-		Point2D resizeAnchorPoint = this.anchors.getResizeAnchorPoint(x, y);
-		this.cx = resizeAnchorPoint.getX();
-		this.cy = resizeAnchorPoint.getY();
-	}
-	
-	public void keepResizing(int x, int y) {
-		this.getResizeScale(x, y);
-		this.affineTransform.translate(cx, cy); //계산 전 원점 이동
-		this.affineTransform.scale(xScale, yScale);
-		this.affineTransform.translate(-cx, -cy); //계산 후 원위치
-		this.px = x; 
-		this.py = y;
-	}
-	
-	private void getResizeScale(int x, int y) {
-		EAnchors eResizeAnchor = this.anchors.geteResizeAnchor();
-		double w1 = px-cx;
-		double w2 = x-cx;
-		double h1 = py-cy;
-		double h2 = y-cy;
-		//배율
-		
-		switch (eResizeAnchor) {
-		case eNW: xScale = w2/w1; yScale= h2/h1; break;
-		case eWW: xScale = w2/w1; yScale=1.0; break;
-		case eSW: xScale = w2/w1; yScale = h2/h1; break;
-		case eSS: xScale = 1.0; yScale = h2/h1; break;
-		case eSE: xScale = w2/w1; yScale = h2/h1; break;
-		case eEE: xScale = w2/w1; yScale=1.0; break;
-		case eNE: xScale = w2/w1; yScale = h2/h1; break;
-		case eNN: xScale = 1.0; yScale = h2/h1; break;
-		default: break;
-		}
-	}
-	
-	public void finalizeResizing(int x, int y) {
-		this.shape = this.affineTransform.createTransformedShape(this.shape); //누적시키지 않도록
-		this.affineTransform.setToIdentity(); //누적 데이터를 초기화 시키기
-	}
-	*/
-	/*
-	public void prepareRotating(int x, int y) {
-		this.rotateAnchorPoints.x=x;
-		this.rotateAnchorPoints.y=y;
-	}
-	
-	public void keepRotating(int x, int y) {
-		this.rotatePoints.x = (int)this.shape.getBounds().getCenterX();
-		this.rotatePoints.y = (int)this.shape.getBounds().getCenterY();
-		Point endPoints = new Point(x,y);
-		double rotateAngle = Math.toRadians(rotateAngle(this.rotatePoints, this.rotateAnchorPoints,endPoints));
-		this.affineTransform.setToRotation(rotateAngle, this.rotatePoints.getX(), this.rotatePoints.getY());		
-	};
-	
-	//tan로 각도 구하기
-	private double rotateAngle(Point rotatePoints, Point startPoints, Point endPoints) { 
-		double startAngle = Math.toDegrees(Math.atan2(rotatePoints.x-startPoints.x, rotatePoints.y-startPoints.y));
-		double endAngle = Math.toDegrees(Math.atan2(rotatePoints.x-endPoints.x, rotatePoints.y-endPoints.y));
-		double rotateAngle = startAngle-endAngle;
-		return rotateAngle;
-	}
-	*/
+
 }

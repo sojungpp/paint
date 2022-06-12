@@ -3,6 +3,7 @@ import javax.swing.JMenuBar;
 
 import menus.EditMenu;
 import menus.FileMenu;
+import menus.ColorMenu;
 
 public class MenuBar extends JMenuBar {
 	//attributes
@@ -11,6 +12,7 @@ public class MenuBar extends JMenuBar {
 	//components
 	private FileMenu fileMenu;
 	private EditMenu editMenu;
+	private ColorMenu colorMenu;
 	
 	private DrawingPanel drawingPanel;
 	
@@ -22,18 +24,22 @@ public class MenuBar extends JMenuBar {
 		this.editMenu = new EditMenu("ÆíÁý");
 		this.add(this.editMenu);
 		
+		this.colorMenu = new ColorMenu("»ö±ò");
+		this.add(this.colorMenu);
+		
 	}
 
 	public void associate(DrawingPanel drawingPanel) {
 		this.drawingPanel = drawingPanel;
 		this.fileMenu.associate(this.drawingPanel);
 		this.editMenu.associate(this.drawingPanel);
+		this.colorMenu.associate(this.drawingPanel);
 	}
 
 	public void initialize() {
 		this.fileMenu.initialize();
 		this.editMenu.initialize();
-		
+		this.colorMenu.initialize();
 	}
 
 }
