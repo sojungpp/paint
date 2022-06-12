@@ -9,6 +9,7 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
+import java.util.ArrayList;
 import java.util.Vector;
 
 import javax.swing.JPanel;
@@ -43,6 +44,7 @@ public class DrawingPanel extends JPanel {
 	private Vector<TShape> shapes;
 	private BufferedImage bufferedImage;
 	private Graphics2D graphics2DBufferedImage;
+	private ArrayList<TShape> shapeList;
 	
 	private EDrawingState eDrawingState;
 	private ETools selectedTool;
@@ -78,7 +80,7 @@ public class DrawingPanel extends JPanel {
 	}	
 	
 	public TShape getSelectedShape() {
-		return selectedShape;
+		return this.selectedShape;
 	}
 
 	public void setSelectedShape(TShape selectedShape) {
@@ -99,6 +101,7 @@ public class DrawingPanel extends JPanel {
 		this.setShapesAll((Vector<TShape>) shapes);
 		this.repaint(); // paint함수는 호출하면 안 됨. repaint사용해서 윈도우가 알아서 할 수 있도록.
 		this.selectedShape=null;
+		this.temp=null;
 	}
 
 	public Object getShapes() {
@@ -124,6 +127,31 @@ public class DrawingPanel extends JPanel {
 	public TShape getTemp() {
 		return temp;
 	}
+	
+	public void cut() {
+			this.temp = null;
+			setTemp(this.selectedShape);
+			this.delete();
+	}
+	
+	public void delete() {
+		if (this.selectedShape != null) {
+				for (int i = 0; i <= shapes.size(); i++) {
+					if(shapes.get(i)==this.selectedShape)
+						this.shapes.remove(this.selectedShape);
+					}
+			this.selectedShape = null;
+			this.repaint();
+		}
+	}
+	
+	public void paste() {
+		if (this.temp != null) {
+			this.shapes.add(this.temp);
+			this.repaint();
+		}
+	}
+
 	
 	public void setThickness(int thickness) {
 		if(selectedShape!=null) {
@@ -222,10 +250,11 @@ public class DrawingPanel extends JPanel {
 		if(!(this.currentShape instanceof TSelection)) { 
 			this.shapes.add(this.currentShape);
 			this.selectedShape = this.currentShape; 
-			this.selectedShape.setSelected(true); 
+			this.selectedShape.setSelected(true);
 //			this.selectedShape.draw((Graphics2D) this.getGraphics());
 		}
 		this.repaint(); 
+		this.selectedShape.getAffineTransform().setToIdentity();
 	}
 	
 	

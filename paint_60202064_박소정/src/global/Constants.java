@@ -1,5 +1,6 @@
 package global;
 
+import shapes.TArc;
 //import shapes.TArc;
 import shapes.TLine;
 import shapes.TOval;
@@ -23,7 +24,8 @@ public class Constants {
 		eOval("동그라미", new TOval(), "images/oval.png", ETransformationStyle.e2PTransformation, "동그라미를 그립니다."),
 		eLine("라인", new TLine(), "images/line.png", ETransformationStyle.e2PTransformation, "라인을 그립니다."),
 		ePolygon("폴리곤", new TPolygon(), "images/polygon.png", ETransformationStyle.eNPTransformation, "다각형을 그립니다."),
-		eTriangle("삼각형", new TTriangle(), "images/triangle.png", ETransformationStyle.e2PTransformation, "세모를 그립니다.");
+		eTriangle("삼각형", new TTriangle(), "images/triangle.png", ETransformationStyle.e2PTransformation, "세모를 그립니다."),
+		eArc("반원", new TArc(), "images/arc.png", ETransformationStyle.e2PTransformation, "반원을 그립니다.");
 		//
 		private String label;
 		private TShape tool;
@@ -62,50 +64,65 @@ public class Constants {
 	}
 	
 	public enum EFileMenu {
-		eNew("새로만들기"),
-		eOpen("열기"),
-		eSave("저장하기"),
-		eSaveAs("다른이름으로저장"),
-		ePrint("프린트"),
-		eQuit("종료");
+		eNew("새로만들기", 'N'),
+		eOpen("열기", 'O'),
+		eSave("저장하기", 'S'),
+		eSaveAs("다른이름으로저장", 'A'),
+		ePrint("프린트", 'P'),
+		eQuit("종료", 'Q');
 		
 		private String lable;
-		private EFileMenu(String label) {
+		private char keyvalue;
+		private EFileMenu(String label, char keyvalue) {
 			this.lable = label;
+			this.keyvalue = keyvalue;
 		}
 		public String getLabel() {
 			return this.lable;
+		}
+		public char getKeyvalue() {
+			return this.keyvalue;
 		}
 	}
 	
 	public enum EEditMenu {
-		eUndo("뒤로가기"),
-		eRedo("되돌리기"),
-		eCut("자르기"),
-		eCopy("복사하기"),
-		ePaste("붙여넣기"),
-		eGroup("그룹화"),
-		eUnGroup("비그룹화");
+		eUndo("뒤로가기", 'Z'),
+		eRedo("되돌리기", 'Y'),
+		eCut("자르기", 'C'),
+		eCopy("복사하기", 'U'),
+		ePaste("붙여넣기", 'T'),
+		eGroup("그룹화", 'G'),
+		eUnGroup("비그룹화", 'B');
 		
 		private String lable;
-		private EEditMenu(String label) {
+		private char keyvalue;
+		private EEditMenu(String label, char keyvalue) {
 			this.lable = label;
+			this.keyvalue = keyvalue;
 		}
 		public String getLabel() {
 			return this.lable;
+		}
+		public char getKeyvalue() {
+			return this.keyvalue;
 		}
 	}
 	
 	public enum EColorMenu {
-		eLineColor("선색깔"),
-		eFillColor("채우기색깔");
+		eLineColor("선색깔", 'L'),
+		eFillColor("채우기색깔", 'F');
 		
 		private String lable;
-		private EColorMenu(String label) {
+		private char keyvalue;
+		private EColorMenu(String label, char keyvalue) {
 			this.lable = label;
+			this.keyvalue = keyvalue;
 		}
 		public String getLabel() {
 			return this.lable;
+		}
+		public char getKeyvalue() {
+			return this.keyvalue;
 		}
 	}
 

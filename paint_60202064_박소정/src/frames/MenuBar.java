@@ -1,5 +1,6 @@
 package frames;
 import javax.swing.JMenuBar;
+import java.awt.event.KeyEvent;
 
 import menus.EditMenu;
 import menus.FileMenu;
@@ -18,13 +19,16 @@ public class MenuBar extends JMenuBar {
 	
 	public MenuBar() {
 		//components
-		this.fileMenu = new FileMenu("파일");
+		this.fileMenu = new FileMenu("파일(F)");
+		fileMenu.setMnemonic(KeyEvent.VK_F);
 		this.add(this.fileMenu);
 		
-		this.editMenu = new EditMenu("편집");
+		this.editMenu = new EditMenu("편집(E)");
+		editMenu.setMnemonic(KeyEvent.VK_E);
 		this.add(this.editMenu);
 		
-		this.colorMenu = new ColorMenu("색깔");
+		this.colorMenu = new ColorMenu("색깔(C)");
+		colorMenu.setMnemonic(KeyEvent.VK_C);
 		this.add(this.colorMenu);
 		
 	}

@@ -26,6 +26,7 @@ public class Mover extends Transformer {
 	@Override
 	public void finalize(int x, int y) {
 		this.shape = this.affineTransform.createTransformedShape(this.shape);
+		
 //		this.affineTransform.setToIdentity();
 //		this.anchors.draw(graphics2D, transformedShape.getBounds()); //transformedShape 하면서 앵커 그리도록
 		

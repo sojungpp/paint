@@ -96,10 +96,11 @@ public class TAnchors implements Serializable{
 			default: break;
 			}
 			this.anchors[eAnchor.ordinal()].setFrame(x, y, WIDTH, HEIGHT); //ÁÂÇ¥¼¼ÆÃ
-			Color color = graphics2D.getColor();
+//			Color color = graphics2D.getColor();
 			graphics2D.setColor(graphics2D.getBackground());
 			graphics2D.fill(this.anchors[eAnchor.ordinal()]);
-			graphics2D.setColor(color);
+//			graphics2D.setColor(color);
+			graphics2D.setColor(Color.black);
 			graphics2D.draw(this.anchors[eAnchor.ordinal()]);
 		}
 	}

@@ -56,7 +56,9 @@ public class Resizer extends Transformer {
 
 	@Override
 	public void finalize(int x, int y) {
+//		this.affineTransform.setToTranslation(0, 0);
 		this.shape = this.affineTransform.createTransformedShape(this.shape); //누적시키지 않도록
+//		this.affineTransform.setToTranslation(0, 0);
 //		this.affineTransform.setToIdentity(); //누적 데이터를 초기화시키기
 
 	}

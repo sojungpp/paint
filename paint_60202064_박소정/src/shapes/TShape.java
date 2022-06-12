@@ -6,6 +6,8 @@ import java.awt.Point;
 import java.awt.Shape;
 import java.awt.geom.AffineTransform;
 import java.io.Serializable;
+
+
 import java.awt.geom.Point2D;
 
 import shapes.TAnchors.EAnchors;
@@ -33,7 +35,14 @@ abstract public class TShape implements Serializable{
 	private AffineTransform affineTransform; //축적된 값을 가지고 있는 것, 항상 shape에 곱해서 사용
 	
 	//constructors
-	public abstract TShape clone();
+	public TShape clone() {
+		try {
+			return (TShape)super.clone();
+		} catch (CloneNotSupportedException e) {
+			e.printStackTrace();
+			return null;
+		}
+	};
 	public TShape() {
 		this.bSelected = false;
 		
@@ -93,9 +102,7 @@ abstract public class TShape implements Serializable{
 	
 	public void draw(Graphics2D graphics2D) {
 		transformedShape = this.affineTransform.createTransformedShape(this.shape); //잠깐 도형 만들어놓기
-		if(lineColor!=null) {
 			graphics2D.setColor(lineColor);
-		} 
 		if(thickness!=0) {
 			graphics2D.setStroke(new BasicStroke(thickness));
 		}

@@ -1,5 +1,6 @@
 package menus;
 import java.awt.event.ActionEvent;
+import java.awt.event.InputEvent;
 import java.awt.event.ActionListener;
 import java.awt.print.PrinterException;
 import java.io.BufferedOutputStream;
@@ -16,6 +17,7 @@ import javax.swing.JFileChooser;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
+import javax.swing.KeyStroke;
 
 import frames.DrawingPanel;
 import global.Constants.EFileMenu;
@@ -35,6 +37,7 @@ public class FileMenu extends JMenu {
 			JMenuItem menuItem = new JMenuItem(eMenuItem.getLabel());
 			menuItem.addActionListener(actionHandler);
 			menuItem.setActionCommand(eMenuItem.name());
+			menuItem.setAccelerator(KeyStroke.getKeyStroke(eMenuItem.getKeyvalue(), InputEvent.CTRL_MASK));
 			this.add(menuItem);
 		}
 	}

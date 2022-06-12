@@ -1,6 +1,5 @@
 package transformer;
 
-import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Shape;
 import java.awt.geom.AffineTransform;
@@ -29,6 +28,7 @@ public abstract class Transformer {
 		this.shape = this.selectedShape.getShape();
 		this.rotateAnchorPoints = new Point();
 		this.rotatePoints = new Point();
+		
 	}
 	
 	public abstract void prepare(int x, int y);

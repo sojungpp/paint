@@ -1,19 +1,15 @@
 package frames;
-import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
 
 import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JCheckBox;
-import javax.swing.JColorChooser;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JRadioButton;
 import javax.swing.JToolBar;
+
 import global.Constants.ETools;
 
 public class ToolBar extends JToolBar {
@@ -22,7 +18,6 @@ public class ToolBar extends JToolBar {
 	
 	//components
 	private JButton button;
-	private JButton button2;
 	private JComboBox<Integer> comboBox;
 	
 	//association
@@ -43,17 +38,6 @@ public class ToolBar extends JToolBar {
 			buttonGroup.add(toolButton);
 		}
 	
-//	JCheckBox checkBox = new JCheckBox("채우기", false);
-//	checkBox.setToolTipText("도형을 채웁니다.");
-//	this.add(checkBox);
-//	checkBox.addItemListener(new ItemListener() {
-//		@Override
-//		public void itemStateChanged(ItemEvent e) {
-//			if(checkBox.isSelected()) drawingPanel.setShapeFill(true);
-//			else drawingPanel.setShapeFill(false);
-//		}
-//	});
-	
 	JLabel label = new JLabel("두께");
 	this.add(label);
 	Integer[] thickness = {1,2,3,4,5,6,7,8,9,10};
@@ -62,15 +46,10 @@ public class ToolBar extends JToolBar {
 	comboBox.setToolTipText("두께를 변경합니다.");
 	this.add(comboBox);
 	
-//	button = new JButton("색");
-//	button.addActionListener(actionHandler2);
-//	button.setToolTipText("색을 변경합니다.");
-//	this.add(button);
-	
-	button2 = new JButton("전체지우기");
-	button2.addActionListener(actionHandler2);
-	button2.setToolTipText("그림 전체를 지웁니다.");
-	this.add(button2);
+	button = new JButton("전체지우기");
+	button.addActionListener(actionHandler2);
+	button.setToolTipText("그림 전체를 지웁니다.");
+	this.add(button);
 }
 	
 	public void associate(DrawingPanel drawingPanel) {
@@ -94,7 +73,7 @@ public class ToolBar extends JToolBar {
 	private class ActionHandler2 implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
-				if (e.getSource() == button2) {
+				if (e.getSource() == button) {
 					drawingPanel.getShapesAll().clear();
 					drawingPanel.repaint();
 				} else if (e.getSource() == comboBox) {
