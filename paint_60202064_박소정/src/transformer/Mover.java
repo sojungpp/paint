@@ -1,7 +1,5 @@
 package transformer;
 
-import java.awt.Graphics2D;
-
 import shapes.TShape;
 
 public class Mover extends Transformer {

@@ -58,6 +58,12 @@ abstract public class TShape implements Serializable{
 	public boolean isSelected() {
 		return this.bSelected;
 	}
+	public double getCenterX() {
+		return this.shape.getBounds2D().getCenterX();
+	}
+	public double getCenterY() {
+		return this.shape.getBounds2D().getCenterY();
+	}
 	public void setSelected(boolean bSelected) {
 		this.bSelected = bSelected;
 	}

@@ -58,6 +58,7 @@ public class EditMenu extends JMenu {
 			} else if (e.getActionCommand().equals(EEditMenu.eCut.name())) {
 				drawingPanel.cut();
 			} else if (e.getActionCommand().equals(EEditMenu.eCopy.name())) {
+				drawingPanel.copy();
 			} else if (e.getActionCommand().equals(EEditMenu.ePaste.name())) {
 				drawingPanel.paste();
 			} else if (e.getActionCommand().equals(EEditMenu.eGroup.name())) {

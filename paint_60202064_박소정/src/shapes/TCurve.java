@@ -2,15 +2,15 @@ package shapes;
 
 import java.awt.geom.Path2D;
 
-public class TFreeLine extends TShape {
+public class TCurve extends TShape {
 	private static final long serialVersionUID = 1L;
 
-	public TFreeLine() {
+	public TCurve() {
 		this.shape = new Path2D.Double();
 	}
 	
 	public TShape clone() {
-		return new TFreeLine();
+		return new TCurve();
 	}
 
 	public void prepareDrawing(int x, int y){

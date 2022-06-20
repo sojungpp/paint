@@ -150,6 +150,13 @@ public class DrawingPanel extends JPanel {
 			this.repaint();
 		}
 	}
+	
+	public void copy() {
+		this.temp = null;
+		setTemp(this.selectedShape);
+			this.shapes.add(this.temp);
+			this.repaint();
+	}
 
 	
 	public void setThickness(int thickness) {
